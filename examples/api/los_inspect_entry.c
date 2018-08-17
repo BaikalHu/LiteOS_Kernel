@@ -201,6 +201,21 @@ UINT32 LOS_InspectByID(enInspectID InspectID)
     }
 }
 
+UINT32 recursive_loop(UINT32 counter, int num)
+{
+    UINT32 test[32];
+    UINT32 index;
+
+    counter++;
+    for(index=0; index < 32; index++)
+        test[index] = counter;
+    LOS_TaskDelay(10);
+
+    return recursive_loop(counter, num)
+        +recursive_loop(counter, num);
+}
+
+
 /*****************************************************************************
  Function    : LOS_Inspect_TskDeal
  Description : Inspect Task Deal
@@ -225,6 +240,7 @@ static VOID LOS_Inspect_TskDeal(VOID)
             gInspectErrCnt++;
         }
     }
+    recursive_loop(1,2);
 
     dprintf("Inspect completed,gInspectErrCnt = [%d]\r\n\r\n", gInspectErrCnt);
 

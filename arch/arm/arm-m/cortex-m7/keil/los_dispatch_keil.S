@@ -50,6 +50,7 @@
     IMPORT  g_stLosTask
     IMPORT  g_pfnTskSwitchHook
     IMPORT  g_bTaskScheduled
+    IMPORT  osConfigStackGuard
 
 ;****************************************************************************************
 ;                                  EQU
@@ -278,6 +279,13 @@ TaskSwitch
     LDRH    R7, [R0, #4]
     ORR     R7, R7, R8
     STRH    R7, [R0, #4]
+;/**************************/
+    LDR     R2, =osConfigStackGuard
+    ;LDR     R2, [R2]
+    PUSH {r0, lr}
+    BLX R2
+    POP {r0, lr}
+;/**************************/
 
     ;/**
     ; * Restore the stack pointer of the next running task from TCB.
